@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ShopWest.Shared
 {
-    internal class CartItem
+    public class CartItem
     {
     }
 }

@@ -14,5 +14,7 @@ namespace ShopWest.Server.Controllers
         {
             _shopWestService = shopWestService;
         }
+
+
     }
 }

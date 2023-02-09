@@ -14,5 +14,11 @@ namespace ShopWest.Server.Controllers
         {
             _shopWestService = shopWestService;
         }
+
+        [HttpGet]
+        public IActionResult Get()
+        {
+            return Ok(_shopWestService.GetProducts());
+        }
     }
 }

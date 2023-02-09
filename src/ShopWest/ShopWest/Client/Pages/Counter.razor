@@ -1,7 +1,7 @@
 ﻿@page "/counter"
 
-@using Stripe;
-@using Stripe.Checkout;
+@*@using Stripe;
+@using Stripe.Checkout;*@
 
 @inject NavigationManager NavManager
 
@@ -19,47 +19,47 @@
 
     private async void IncrementCount()
     {
-        StripeConfiguration.ApiKey = "sk_test_51LsVy9CMu7ushuI6btDCb6r0zOd4IaT7hjNPKHF4xTIQLwNBf1o67KsejwQgj7G8GLzfC0hjn3FlpfmyuIoQgT0U004HIcrGb8";
+        //StripeConfiguration.ApiKey = "sk_test_51LsVy9CMu7ushuI6btDCb6r0zOd4IaT7hjNPKHF4xTIQLwNBf1o67KsejwQgj7G8GLzfC0hjn3FlpfmyuIoQgT0U004HIcrGb8";
 
-        var options = new SessionCreateOptions
-            {
-                LineItems = new List<SessionLineItemOptions>
-                {
-                  new SessionLineItemOptions
-                  {
-                      Price = "price_1M5QoFCMu7ushuI6vsnEeC5N",
+        //var options = new SessionCreateOptions
+        //    {
+        //        LineItems = new List<SessionLineItemOptions>
+        //        {
+        //          new SessionLineItemOptions
+        //          {
+        //              Price = "price_1M5QoFCMu7ushuI6vsnEeC5N",
 
-                    //PriceData = new SessionLineItemPriceDataOptions
-                    //{
-                    //  UnitAmount = 2000,
-                    //  Currency = "usd",
-                    //  ProductData = new SessionLineItemPriceDataProductDataOptions
-                    //  {
+        //            //PriceData = new SessionLineItemPriceDataOptions
+        //            //{
+        //            //  UnitAmount = 2000,
+        //            //  Currency = "usd",
+        //            //  ProductData = new SessionLineItemPriceDataProductDataOptions
+        //            //  {
 
-                    //  },
-                    //},
-                    Quantity = 1,
-                  },
-                },
-                Mode = "subscription",
-                SuccessUrl = $"{NavManager.Uri}/success",
-                CancelUrl = $"{NavManager.Uri}/cancel",
-            };
+        //            //  },
+        //            //},
+        //            Quantity = 1,
+        //          },
+        //        },
+        //        Mode = "subscription",
+        //        SuccessUrl = $"{NavManager.Uri}/success",
+        //        CancelUrl = $"{NavManager.Uri}/cancel",
+        //    };
 
-        var service = new SessionService();
-        Session session = await service.CreateAsync(options);
+        //var service = new SessionService();
+        //Session session = await service.CreateAsync(options);
 
-        NavManager.NavigateTo(session.Url);
+        //NavManager.NavigateTo(session.Url);
 
         //currentCount++;
     }
 
     private async void IncrementCount2()
     {
-        StripeConfiguration.ApiKey = "sk_test_51LsVy9CMu7ushuI6btDCb6r0zOd4IaT7hjNPKHF4xTIQLwNBf1o67KsejwQgj7G8GLzfC0hjn3FlpfmyuIoQgT0U004HIcrGb8";
+        //StripeConfiguration.ApiKey = "sk_test_51LsVy9CMu7ushuI6btDCb6r0zOd4IaT7hjNPKHF4xTIQLwNBf1o67KsejwQgj7G8GLzfC0hjn3FlpfmyuIoQgT0U004HIcrGb8";
 
-        var service = new ProductService();
-        var products = await service.ListAsync();
+        //var service = new ProductService();
+        //var products = await service.ListAsync();
 
         //currentCount++;
     }

@@ -58,7 +58,7 @@
                                                         <div style="width: 80px;">
                                                             <h5 class="mb-0">@item.Price</h5>
                                                         </div>
-                                                        <a href="#!" style="color: #cecece;">
+                                                        <a href="#" style="color: #cecece;">
                                                             <i class="fas fa-trash-alt"></i>
                                                         </a>
                                                     </div>
@@ -76,7 +76,10 @@
 
                                         <div class="d-flex justify-content-between mb-4">
                                             <p class="mb-2">Total(Incl. taxes)</p>
-                                            <p class="mb-2">@items.Sum(c => Convert.ToDouble(c.Price) * c.Quantity) </p>
+                                            @if (items != null)
+                                            {
+                                                <p class="mb-2">@items.Sum(c => Convert.ToDouble(c.Price) * c.Quantity) </p>
+                                            }
                                         </div>
 
                                         <button class="btn btn-info btn-block btn-lg" @onclick="Checkout">

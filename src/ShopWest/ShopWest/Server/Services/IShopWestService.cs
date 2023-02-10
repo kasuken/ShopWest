@@ -4,6 +4,6 @@ namespace ShopWest.Server.Services
 {
     public interface IShopWestService
     {
-        Task<List<Product>> GetProducts();
+        Task<List<ShopWest.Shared.Product>> GetProducts();
     }
 }

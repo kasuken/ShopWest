@@ -1,0 +1,14 @@
+﻿@page "/cart/success"
+@using ShopWest.Client.Services
+
+@inject ICartService CartService
+
+<h3>Thank you for your order.</h3>
+
+@code {
+    protected override Task OnInitializedAsync()
+    {
+        CartService.EmptyCart();
+        return base.OnInitializedAsync();
+    }
+}

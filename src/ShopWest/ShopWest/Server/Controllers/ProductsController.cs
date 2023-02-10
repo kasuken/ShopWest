@@ -16,9 +16,11 @@ namespace ShopWest.Server.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            return Ok(_shopWestService.GetProducts());
+            var products = await _shopWestService.GetProducts();
+            
+            return Ok(products);
         }
     }
 }

@@ -1,0 +1,60 @@
+﻿@using ShopWest.Client.Services
+@inject HttpClient Http
+@inject ICartService CartService
+
+<div class="album py-5">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+        @if (products == null)
+        {
+            <span>Loading...</span>
+        }
+        else
+        {
+            foreach (var item in products)
+            {
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <img class="bd-placeholder-img card-img-top" width="100%" height="225" src="@item.ImageUrl"/>
+
+                        <div class="card-body">
+                            <p class="card-text">@item.Name</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <button class="btn btn-sm btn-outline-secondary" @onclick="() => AddToCart(item)">Add to cart</button>
+                                </div>
+                                <small class="text-muted">@item.Type</small>
+                                <small class="text-muted">@item.Price</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+@code {
+    private ShopWest.Shared.Product[]? products;
+
+    protected override async Task OnInitializedAsync()
+    {
+        products = await Http.GetFromJsonAsync<ShopWest.Shared.Product[]>("/api/Products");
+    }
+
+    void AddToCart(ShopWest.Shared.Product product)
+    {
+        var cartItem = new ShopWest.Shared.CartItem
+        {
+            ProductId = product.Id,
+            ProductTitle = product.Name,
+            Price = product.Price,
+            Image = product.ImageUrl,
+            PriceId = product.PriceId,
+            Type = product.Type,
+            Quantity = 1
+        };
+
+        CartService.AddToCart(cartItem);
+    }
+}

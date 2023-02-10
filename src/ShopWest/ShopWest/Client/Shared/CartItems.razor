@@ -1,0 +1,137 @@
+﻿@using ShopWest.Client.Services
+@using Stripe
+@using Stripe.Checkout
+
+@inject NavigationManager NavManager
+@inject ICartService CartService
+
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
+<section class="h-100 h-custom" style="background-color: #eee;">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body p-4">
+
+                        <div class="row">
+
+                            <div class="col-lg-7">
+                                <h5 class="mb-3">
+                                    <a href="/" class="text-body">
+                                        <i
+                                            class="fas fa-long-arrow-alt-left me-2">
+                                        </i>Continue shopping
+                                    </a>
+                                </h5>
+                                <hr>
+
+                                @if (items != null)
+                                {
+                                    <div class="d-flex justify-content-between align-items-center mb-4">
+                                        <div>
+                                            <p class="mb-1">Shopping cart</p>
+                                            <p class="mb-0">You have @items.Count items in your cart</p>
+                                        </div>
+                                    </div>
+
+                                    @foreach (var item in items)
+                                    {
+                                        <div class="card mb-3">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex flex-row align-items-center">
+                                                        <div>
+                                                            <img
+                                                                src="@item.Image"
+                                                                class="img-fluid rounded-3" alt="Shopping item" style="width: 65px;">
+                                                        </div>
+                                                        <div class="ms-3">
+                                                            <h5>@item.ProductTitle</h5>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-flex flex-row align-items-center">
+                                                        <div style="width: 50px;">
+                                                            <h5 class="fw-normal mb-0">@item.Quantity</h5>
+                                                        </div>
+                                                        <div style="width: 80px;">
+                                                            <h5 class="mb-0">@item.Price</h5>
+                                                        </div>
+                                                        <a href="#" style="color: #cecece;">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+
+                            </div>
+                            <div class="col-lg-5">
+
+                                <div class="card bg-primary text-white rounded-3">
+                                    <div class="card-body">
+
+                                        <div class="d-flex justify-content-between mb-4">
+                                            <p class="mb-2">Total(Incl. taxes)</p>
+                                            @if (items != null)
+                                            {
+                                                <p class="mb-2">@items.Sum(c => Convert.ToDouble(c.Price) * c.Quantity) </p>
+                                            }
+                                        </div>
+
+                                        <button class="btn btn-info btn-block btn-lg" @onclick="Checkout">
+                                            <div class="d-flex justify-content-between">
+                                                <span>Checkout <i class="fas fa-long-arrow-alt-right ms-2"></i></span>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@code {
+    private List<ShopWest.Shared.CartItem>? items;
+
+    protected override async Task OnInitializedAsync()
+    {
+        items = await CartService.GetCartItems();
+    }
+
+    async void Checkout()
+    {
+        StripeConfiguration.ApiKey = Configuration["StripeSettings:SecretKey"];
+
+        var lineItems = new List<SessionLineItemOptions>();
+
+        foreach (var item in items)
+        {
+            lineItems.Add( new SessionLineItemOptions
+            {
+                Price = item.PriceId,
+                Quantity = item.Quantity,
+            });  
+        }
+
+        var options = new SessionCreateOptions
+        {
+            LineItems = lineItems,
+            Mode = "subscription",
+            SuccessUrl = $"{NavManager.Uri}/success",
+            CancelUrl = $"{NavManager.Uri}/cancel",
+        };
+
+        var service = new SessionService();
+        var session = await service.CreateAsync(options);
+
+        NavManager.NavigateTo(session.Url);
+    }
+}
